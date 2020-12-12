@@ -4,3 +4,29 @@
     -fx-font-family: "Helvetica, Arial, sans-serif";
 
 }
+Button{
+    -fx-min-width: 100px;
+    -fx-min-height:100px;
+    -fx-background-size:100px 100px;
+}
+#boy1{
+    -fx-background-image: url(image/boy1.jpg);
+}
+#boy2{
+    -fx-background-image: url(image/boy2.jpg);
+}
+#boy3{
+    -fx-background-image: url(image/boy3.jpg);
+}
+#boy4{
+    -fx-background-image: url(image/boy4.jpg);
+}
+#boy5{
+    -fx-background-image: url(image/boy5.jpg);
+}
+#boy6{
+    -fx-background-image: url(image/boy6.jpg);
+}
+#boy7{
+    -fx-background-image: url(image/boy7.jpg);
+}

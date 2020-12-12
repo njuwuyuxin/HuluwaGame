@@ -20,7 +20,7 @@ public class Main extends Application{
 
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Main.fxml"));
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 1000, 1000);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("application.css").toExternalForm());
 
         primaryStage.setTitle("Simple JavaFX");
