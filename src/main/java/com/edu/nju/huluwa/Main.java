@@ -22,12 +22,12 @@ public class Main extends Application{
     }
 
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Main.fxml"));
-        Scene scene = new Scene(root, 1000, 1000);
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("application.css").toExternalForm());
+        Parent mainMenuRoot = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
+        Scene mainMenuScene = new Scene(mainMenuRoot, 1000, 1000);
+        mainMenuScene.getStylesheets().add(getClass().getClassLoader().getResource("mainMenu.css").toExternalForm());
 
         primaryStage.setTitle("HuluwaGame");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainMenuScene);
         primaryStage.show();
 
         /*Test NetClient*/
@@ -45,8 +45,6 @@ public class Main extends Application{
                 if(m!=null){
                     System.out.println("message type:"+m.getKind());
                 }
-                //else
-                    //System.out.println("null");
             }
         }
         else if(cmd==2){

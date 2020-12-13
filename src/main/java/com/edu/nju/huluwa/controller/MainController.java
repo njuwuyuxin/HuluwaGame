@@ -1,4 +1,4 @@
-package com.edu.nju.huluwa;
+package com.edu.nju.huluwa.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
