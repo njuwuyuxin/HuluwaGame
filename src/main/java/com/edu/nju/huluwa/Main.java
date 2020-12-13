@@ -45,8 +45,8 @@ public class Main extends Application{
                 if(m!=null){
                     System.out.println("message type:"+m.getKind());
                 }
-                else
-                    System.out.println("null");
+                //else
+                    //System.out.println("null");
             }
         }
         else if(cmd==2){

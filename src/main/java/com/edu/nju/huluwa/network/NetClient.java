@@ -29,6 +29,12 @@ public class NetClient {
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
+        try(ServerSocket ss = new ServerSocket(0);) {
+            localPort = ss.getLocalPort();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("port:" + localPort);
     }
 
     public String getLocalAddr() {
@@ -55,6 +61,7 @@ public class NetClient {
         sendQueueLock.lock();
         try{
             sendQueue.offer(msg);
+            System.out.println("add msg to sendQueue");
         } finally {
             sendQueueLock.unlock();
         }
@@ -74,11 +81,11 @@ public class NetClient {
     }
 
     public boolean start(String asClientOrServer){
-        if(asClientOrServer == "client"){
+        if(asClientOrServer.equals("client")){
             boolean succ = connectAsClient(remoteAddr, remotePort);
             if(!succ) return false;
         }
-        else if(asClientOrServer == "server"){
+        else if(asClientOrServer.equals("server")){
             connectAsServer();
         }
         else {
@@ -110,9 +117,8 @@ public class NetClient {
         int retry = 0;
         while(socket == null && retry++ < 10) {
             try (
-                    ServerSocket ss = new ServerSocket(8888); // get a free port randomly
+                    ServerSocket ss = new ServerSocket(localPort); // get a free port randomly
             ) {
-                localPort = ss.getLocalPort();
                 socket = ss.accept();
 
             } catch (IOException e) {
@@ -136,6 +142,7 @@ public class NetClient {
                         if(!sendQueue.isEmpty()){
                             Message msg = sendQueue.poll();
                             out.writeObject(msg);
+                            System.out.println("already send the msg");
                             // TODO - add log
                             out.flush();
                         }
@@ -157,16 +164,17 @@ public class NetClient {
                     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             ) {
                 while(running){
+                    Message msg = (Message) in.readObject();
+                    System.out.println("receive msg, msg type : " + msg.getKind());
                     recvQueueLock.lock();
                     try {
-                        Message msg = (Message) in.readObject();
                         recvQueue.offer(msg);
                     } finally {
                         recvQueueLock.unlock();
                     }
                 }
             } catch (IOException e) {
-                System.err.println("the connection ");
+                System.err.println("the connection broke");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
