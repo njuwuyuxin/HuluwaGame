@@ -44,21 +44,21 @@
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button id="boy1" mnemonicParsing="false" onAction="#boy1Clicked" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button id="boy2" mnemonicParsing="false" onAction="#boy2Clicked" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Button id="boy3" mnemonicParsing="false" onAction="#boy3Clicked" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button id="boy4" mnemonicParsing="false" onAction="#boy4Clicked" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Button id="boy5" mnemonicParsing="false" onAction="#boy5Clicked" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <Button id="boy6" mnemonicParsing="false" onAction="#boy6Clicked" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <Button id="boy7" mnemonicParsing="false" onAction="#boy7Clicked" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Button id="boy1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button id="boy2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button id="boy3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button id="boy4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Button id="boy5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Button id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Button id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
 
-                        <Button id="wugong" mnemonicParsing="false" onAction="#boy1Clicked" GridPane.columnIndex="9" GridPane.rowIndex="1" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#boy2Clicked" GridPane.columnIndex="9" GridPane.rowIndex="2" />
-                        <Button id="xiezi" mnemonicParsing="false" onAction="#boy3Clicked" GridPane.columnIndex="9" GridPane.rowIndex="3" />
-                        <Button id="shejing" mnemonicParsing="false" onAction="#boy4Clicked" GridPane.columnIndex="9" GridPane.rowIndex="4" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#boy5Clicked" GridPane.columnIndex="9" GridPane.rowIndex="5" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#boy6Clicked" GridPane.columnIndex="9" GridPane.rowIndex="6" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#boy7Clicked" GridPane.columnIndex="9" GridPane.rowIndex="7" />
+                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+                        <Button id="xiezi" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+                        <Button id="shejing" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="4" />
+                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="6" />
+                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="7" />
                     </children>
                 </GridPane>
             </children>

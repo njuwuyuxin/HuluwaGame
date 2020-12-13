@@ -19,47 +19,48 @@ public class MainController {
     }
 
     @FXML
-    public void boy1Clicked(ActionEvent event){
+    public void handleObjectButton(ActionEvent event){
         Button btnSource = (Button) event.getSource();
         currentButton = btnSource;
-        currentBoyIndex = 1;
+        //TODO: get boy object using row,col info
+        //currentObject = xxx.getObject(row,col);
     }
-    @FXML
-    public void boy2Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 2;
-    }
-    @FXML
-    public void boy3Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 3;
-    }
-    @FXML
-    public void boy4Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 4;
-    }
-    @FXML
-    public void boy5Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 5;
-    }
-    @FXML
-    public void boy6Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 6;
-    }
-    @FXML
-    public void boy7Clicked(ActionEvent event){
-        Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
-        currentBoyIndex = 7;
-    }
+//    @FXML
+//    public void boy2Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 2;
+//    }
+//    @FXML
+//    public void boy3Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 3;
+//    }
+//    @FXML
+//    public void boy4Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 4;
+//    }
+//    @FXML
+//    public void boy5Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 5;
+//    }
+//    @FXML
+//    public void boy6Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 6;
+//    }
+//    @FXML
+//    public void boy7Clicked(ActionEvent event){
+//        Button btnSource = (Button) event.getSource();
+//        currentButton = btnSource;
+//        currentBoyIndex = 7;
+//    }
 
     @FXML
     public void gridClicked(MouseEvent event) {
