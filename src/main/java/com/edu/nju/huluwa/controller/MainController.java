@@ -22,6 +22,7 @@ public class MainController {
     public void handleObjectButton(ActionEvent event){
         Button btnSource = (Button) event.getSource();
         currentButton = btnSource;
+        System.out.println(btnSource.getId());
         //TODO: get boy object using row,col info
         //currentObject = xxx.getObject(row,col);
     }

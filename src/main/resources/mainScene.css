@@ -37,6 +37,18 @@ Button{
 #shejing{
     -fx-background-image: url(image/shejing.jpg);
 }
-#wugong{
+#wugong1{
+    -fx-background-image: url(image/wugong.jpg);
+}
+#wugong2{
+    -fx-background-image: url(image/wugong.jpg);
+}
+#wugong3{
+    -fx-background-image: url(image/wugong.jpg);
+}
+#wugong4{
+    -fx-background-image: url(image/wugong.jpg);
+}
+#wugong5{
     -fx-background-image: url(image/wugong.jpg);
 }

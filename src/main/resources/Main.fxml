@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
+
 <BorderPane xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edu.nju.huluwa.controller.MainController">
     <center>
         <StackPane>
             <children>
                 <ImageView>
                     <image>
-                        <Image url="@image/bg.png"></Image>
+                        <Image url="@image/bg.png" />
                     </image>
                 </ImageView>
-                <GridPane prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER" onMouseClicked="#gridClicked" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+                <GridPane onMouseClicked="#gridClicked" prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -52,13 +52,13 @@
                         <Button id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                         <Button id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
 
-                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="1" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+                        <Button id="wugong1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+                        <Button id="wugong2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="2" />
                         <Button id="xiezi" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="3" />
                         <Button id="shejing" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="4" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="5" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="6" />
-                        <Button id="wugong" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="7" />
+                        <Button id="wugong3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                        <Button id="wugong4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="6" />
+                        <Button id="wugong5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="7" />
                     </children>
                 </GridPane>
             </children>
