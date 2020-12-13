@@ -110,7 +110,7 @@ public class NetClient {
         int retry = 0;
         while(socket == null && retry++ < 10) {
             try (
-                    ServerSocket ss = new ServerSocket(0); // get a free port randomly
+                    ServerSocket ss = new ServerSocket(8888); // get a free port randomly
             ) {
                 localPort = ss.getLocalPort();
                 socket = ss.accept();

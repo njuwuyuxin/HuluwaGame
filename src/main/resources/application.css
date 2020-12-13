@@ -30,3 +30,13 @@ Button{
 #boy7{
     -fx-background-image: url(image/boy7.jpg);
 }
+
+#xiezi{
+    -fx-background-image: url(image/xiezi.jpg);
+}
+#shejing{
+    -fx-background-image: url(image/shejing.jpg);
+}
+#wugong{
+    -fx-background-image: url(image/wugong.jpg);
+}
