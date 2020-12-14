@@ -1,5 +1,6 @@
 package com.edu.nju.huluwa.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,5 +23,8 @@ public class MainMenuController {
         currentStage.hide();
         currentStage.setScene(mainScene);
         currentStage.show();
+    }
+    public void handleGameExitButton(ActionEvent event){
+        Platform.exit();
     }
 }
