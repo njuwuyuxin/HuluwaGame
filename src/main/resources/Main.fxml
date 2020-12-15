@@ -44,13 +44,13 @@
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button id="boy1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button id="boy2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Button id="boy3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button id="boy4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Button id="boy5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <Button id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <Button id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Button fx:id="boy1" id="boy1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button fx:id="boy2" id="boy2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button fx:id="boy3" id="boy3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button fx:id="boy4" id="boy4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Button fx:id="boy5" id="boy5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Button fx:id="boy6" id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Button fx:id="boy7" id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
 
                         <Button id="wugong1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="1" />
                         <Button id="wugong2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="2" />

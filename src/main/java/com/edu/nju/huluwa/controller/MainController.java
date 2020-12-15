@@ -1,6 +1,12 @@
 package com.edu.nju.huluwa.controller;
 
+import com.edu.nju.huluwa.GameManager;
+import com.edu.nju.huluwa.network.Message;
+import com.edu.nju.huluwa.network.MoveMsg;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.event.ActionEvent;
@@ -8,9 +14,26 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class MainController {
     private Button currentButton;
     private int currentBoyIndex;
+    private Scene selfScene;
+
+    @FXML
+    public void initialize(Scene scene){
+        selfScene = scene;
+        System.out.println(GameManager.getInstance().getNetMode());
+        if(GameManager.getInstance().getNetMode()== GameManager.NetMode.SERVER) {
+            GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
+            waitForResponse();
+        }
+        else{
+            GameManager.getInstance().turn = GameManager.Turn.SELF;
+        }
+    }
 
     @FXML
     public void handlerBtnClick(ActionEvent event) {
@@ -68,11 +91,46 @@ public class MainController {
         //cal grid position with mouse position
         int clickCol = (int)event.getSceneX()/100;
         int clickRow = (int)event.getSceneY()/100;
-        System.out.println(event.getSceneX()+" "+event.getSceneY());
-        if(currentButton!=null) {
-            GridPane.setColumnIndex(currentButton, clickCol);
-            GridPane.setRowIndex(currentButton, clickRow);
+        int currentX = 0;
+        int currentY = 0;
+//        System.out.println(event.getSceneX()+" "+event.getSceneY());
+        if(GameManager.getInstance().turn==GameManager.Turn.SELF) {
+            if (currentButton != null) {
+                //Update UI first
+                GridPane.setColumnIndex(currentButton, clickCol);
+                GridPane.setRowIndex(currentButton, clickRow);
+                //Then send message
+                currentX = GridPane.getColumnIndex(currentButton);
+                currentY = GridPane.getRowIndex(currentButton);
+                Message moveMsg = new MoveMsg(currentButton.getId(),currentX, currentY, clickCol, clickRow);
+                GameManager.getInstance().getNetClient().sendMsg(moveMsg);
+                currentButton = null;
+                waitForResponse();
+            }
         }
-        currentButton = null;
+    }
+
+    private void waitForResponse(){
+        while (true){
+            Message m = GameManager.getInstance().getNetClient().recvMsg();
+            if(m!=null){
+                System.out.println("message type:"+m.getKind());
+                //TODO: main logic after receiving message
+                if(m.getKind()==Message.Kind.MOVE){
+                    MoveMsg moveMsg = (MoveMsg)m;
+                    System.out.println("Receive Move Message:");
+                    System.out.println("object:"+moveMsg.getObjectId()+" from:("+moveMsg.getFromX()+","+moveMsg.getFromY()+") to:("+moveMsg.getToX()+","+moveMsg.getToY()+")");
+                    Button object = (Button)selfScene.lookup("#"+moveMsg.getObjectId());
+                    moveObject(object,moveMsg.getToX(),moveMsg.getToY());
+                }
+                GameManager.getInstance().turn=GameManager.Turn.SELF;
+                break;
+            }
+        }
+    }
+
+    private void moveObject(Button object,int toX,int toY){
+        GridPane.setColumnIndex(object,toX);
+        GridPane.setRowIndex(object,toY);
     }
 }
