@@ -1,5 +1,7 @@
 package com.edu.nju.huluwa.network;
 
+import com.edu.nju.huluwa.GameManager;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -166,6 +168,7 @@ public class NetClient {
                 while(running){
                     Message msg = (Message) in.readObject();
                     System.out.println("receive msg, msg type : " + msg.getKind());
+                    GameManager.getInstance().handleReceiveMessage(msg);
                     recvQueueLock.lock();
                     try {
                         recvQueue.offer(msg);
