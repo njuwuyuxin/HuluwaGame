@@ -3,6 +3,7 @@ package com.edu.nju.huluwa.controller;
 import com.edu.nju.huluwa.GameManager;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.MoveMsg;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -49,42 +50,6 @@ public class MainController {
         //TODO: get boy object using row,col info
         //currentObject = xxx.getObject(row,col);
     }
-//    @FXML
-//    public void boy2Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 2;
-//    }
-//    @FXML
-//    public void boy3Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 3;
-//    }
-//    @FXML
-//    public void boy4Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 4;
-//    }
-//    @FXML
-//    public void boy5Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 5;
-//    }
-//    @FXML
-//    public void boy6Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 6;
-//    }
-//    @FXML
-//    public void boy7Clicked(ActionEvent event){
-//        Button btnSource = (Button) event.getSource();
-//        currentButton = btnSource;
-//        currentBoyIndex = 7;
-//    }
 
     @FXML
     public void gridClicked(MouseEvent event) {
@@ -93,7 +58,6 @@ public class MainController {
         int clickRow = (int)event.getSceneY()/100;
         int currentX = 0;
         int currentY = 0;
-//        System.out.println(event.getSceneX()+" "+event.getSceneY());
         if(GameManager.getInstance().turn==GameManager.Turn.SELF) {
             if (currentButton != null) {
                 //Update UI first
@@ -108,25 +72,40 @@ public class MainController {
                 waitForResponse();
             }
         }
+        else{
+            currentButton = null;
+        }
     }
 
     private void waitForResponse(){
-        while (true){
-            Message m = GameManager.getInstance().getNetClient().recvMsg();
-            if(m!=null){
-                System.out.println("message type:"+m.getKind());
-                //TODO: main logic after receiving message
+        Task<Void> t = new Task<Void>() {
+            Message m;
+            @Override
+            protected Void call() throws Exception {
+                while (true){
+                    m = GameManager.getInstance().getNetClient().recvMsg();
+                    if(m!=null){
+                        System.out.println("message type:"+m.getKind());
+                        break;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded(){
                 if(m.getKind()==Message.Kind.MOVE){
                     MoveMsg moveMsg = (MoveMsg)m;
+                    //TODO: main logic after receiving message
                     System.out.println("Receive Move Message:");
                     System.out.println("object:"+moveMsg.getObjectId()+" from:("+moveMsg.getFromX()+","+moveMsg.getFromY()+") to:("+moveMsg.getToX()+","+moveMsg.getToY()+")");
                     Button object = (Button)selfScene.lookup("#"+moveMsg.getObjectId());
                     moveObject(object,moveMsg.getToX(),moveMsg.getToY());
+                    GameManager.getInstance().turn=GameManager.Turn.SELF;
                 }
-                GameManager.getInstance().turn=GameManager.Turn.SELF;
-                break;
             }
-        }
+        };
+        new Thread(t).start();
     }
 
     private void moveObject(Button object,int toX,int toY){
