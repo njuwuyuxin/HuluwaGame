@@ -26,7 +26,7 @@ public class MainMenuController {
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent netSettingRoot = fxmlLoader.load();
 
-        Scene netSettingScene = new Scene(netSettingRoot, 500, 300);
+        Scene netSettingScene = new Scene(netSettingRoot, 500, 180);
         netSettingScene.getStylesheets().add(getClass().getClassLoader().getResource("NetSetting.css").toExternalForm());
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.hide();
