@@ -48,7 +48,7 @@ public class NetSettingController {
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent mainSceneRoot = fxmlLoader.load();
 
-        Scene mainScene = new Scene(mainSceneRoot, 1000, 1000);
+        Scene mainScene = new Scene(mainSceneRoot, 1400, 1000);
         mainScene.getStylesheets().add(getClass().getClassLoader().getResource("mainScene.css").toExternalForm());
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         currentStage.hide();

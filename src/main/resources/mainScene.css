@@ -52,3 +52,14 @@ Button{
 #wugong5{
     -fx-background-image: url(image/wugong.jpg);
 }
+
+#Camp{
+    -fx-pref-width:400px;
+    -fx-font-size:30px;
+    -fx-font-weight:bold;
+}
+#Turn{
+    -fx-pref-width:400px;
+    -fx-font-size:28px;
+    -fx-font-weight:bold;
+}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -8,8 +9,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edu.nju.huluwa.controller.MainController">
+<BorderPane stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edu.nju.huluwa.controller.MainController">
     <center>
         <StackPane>
             <children>
@@ -44,13 +46,13 @@
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="boy1" id="boy1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button fx:id="boy2" id="boy2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Button fx:id="boy3" id="boy3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button fx:id="boy4" id="boy4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <Button fx:id="boy5" id="boy5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <Button fx:id="boy6" id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                        <Button fx:id="boy7" id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Button id="boy1" fx:id="boy1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button id="boy2" fx:id="boy2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button id="boy3" fx:id="boy3" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button id="boy4" fx:id="boy4" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Button id="boy5" fx:id="boy5" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Button id="boy6" fx:id="boy6" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Button id="boy7" fx:id="boy7" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="0" GridPane.rowIndex="7" />
 
                         <Button id="wugong1" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="1" />
                         <Button id="wugong2" mnemonicParsing="false" onAction="#handleObjectButton" GridPane.columnIndex="9" GridPane.rowIndex="2" />
@@ -64,4 +66,12 @@
             </children>
         </StackPane>
     </center>
+   <right>
+      <VBox prefHeight="1000.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label id="Camp" alignment="CENTER" text="阵营" textFill="RED" />
+            <Label id="Turn" alignment="CENTER" text="你的回合" textFill="#6800c4" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

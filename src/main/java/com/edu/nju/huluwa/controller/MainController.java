@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.input.MouseEvent;
@@ -28,25 +29,28 @@ public class MainController {
         selfScene = scene;
         System.out.println(GameManager.getInstance().getNetMode());
         if(GameManager.getInstance().getNetMode()== GameManager.NetMode.SERVER) {
+            ((Label)selfScene.lookup("#Camp")).setText("妖怪阵营");
+            ((Label)selfScene.lookup("#Turn")).setText("对方回合");
             GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
             waitForResponse();
         }
         else{
+            ((Label)selfScene.lookup("#Camp")).setText("葫芦娃阵营");
+            ((Label)selfScene.lookup("#Turn")).setText("你的回合");
             GameManager.getInstance().turn = GameManager.Turn.SELF;
         }
     }
 
     @FXML
-    public void handlerBtnClick(ActionEvent event) {
-        Button btnSource = (Button) event.getSource();
-        btnSource.setText("I am clicked!");
-    }
-
-    @FXML
     public void handleObjectButton(ActionEvent event){
         Button btnSource = (Button) event.getSource();
-        currentButton = btnSource;
         System.out.println(btnSource.getId());
+        if(checkObjectCamp(btnSource)){
+            currentButton = btnSource;
+        }
+        else{
+            currentButton = null;
+        }
         //TODO: get boy object using row,col info
         //currentObject = xxx.getObject(row,col);
     }
@@ -78,6 +82,8 @@ public class MainController {
     }
 
     private void waitForResponse(){
+        ((Label)selfScene.lookup("#Turn")).setText("对方回合");
+        GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
         Task<Void> t = new Task<Void>() {
             Message m;
             @Override
@@ -101,12 +107,34 @@ public class MainController {
                     System.out.println("object:"+moveMsg.getObjectId()+" from:("+moveMsg.getFromX()+","+moveMsg.getFromY()+") to:("+moveMsg.getToX()+","+moveMsg.getToY()+")");
                     Button object = (Button)selfScene.lookup("#"+moveMsg.getObjectId());
                     moveObject(object,moveMsg.getToX(),moveMsg.getToY());
+                    ((Label)selfScene.lookup("#Turn")).setText("你的回合");
                     GameManager.getInstance().turn=GameManager.Turn.SELF;
                 }
             }
         };
         new Thread(t).start();
     }
+
+    boolean checkObjectCamp(Button object){
+        //server = monster camp
+        if(GameManager.getInstance().getNetMode()==GameManager.NetMode.SERVER){
+            if(object.getId().equals("wugong1")||object.getId().equals("wugong2")||object.getId().equals("wugong3")||object.getId().equals("wugong4")||
+                    object.getId().equals("wugong5")||object.getId().equals("xiezi")||object.getId().equals("shejing"))
+                return true;
+            else
+                return false;
+        }
+        //client = huluwa camp
+        else if(GameManager.getInstance().getNetMode()==GameManager.NetMode.CLIENT){
+            if(object.getId().equals("boy1")||object.getId().equals("boy2")||object.getId().equals("boy3")||object.getId().equals("boy4")||
+                    object.getId().equals("boy5")||object.getId().equals("boy6")||object.getId().equals("boy7"))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
+
 
     private void moveObject(Button object,int toX,int toY){
         GridPane.setColumnIndex(object,toX);
