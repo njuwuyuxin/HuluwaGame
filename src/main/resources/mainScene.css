@@ -63,3 +63,8 @@ Button{
     -fx-font-size:28px;
     -fx-font-weight:bold;
 }
+#Phase{
+    -fx-pref-width:400px;
+    -fx-font-size:28px;
+    -fx-font-weight:bold;
+}

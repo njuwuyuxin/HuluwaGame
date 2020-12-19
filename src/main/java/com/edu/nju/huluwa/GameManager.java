@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 public class GameManager {
     public enum NetMode {SERVER,CLIENT};
     public enum Turn {SELF,OPPOSITE};
+    public enum Phase {MOVE,ATTACK};
 
     private static GameManager instance = new GameManager();
     private NetClient nc;
@@ -16,6 +17,7 @@ public class GameManager {
 
     private NetMode netMode;
     public Turn turn;
+    public Phase phase;
     private GameManager(){
         nc = new NetClient();
     }

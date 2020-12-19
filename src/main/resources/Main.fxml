@@ -71,6 +71,7 @@
          <children>
             <Label id="Camp" alignment="CENTER" text="阵营" textFill="RED" />
             <Label id="Turn" alignment="CENTER" text="你的回合" textFill="#6800c4" />
+            <Label id="Phase" alignment="CENTER" text="移动阶段" textFill="#032490" />
          </children>
       </VBox>
    </right>
