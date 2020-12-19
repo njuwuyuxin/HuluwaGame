@@ -5,8 +5,6 @@ import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.MoveMsg;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -16,13 +14,20 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.input.MouseEvent;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class MainController {
     private Button currentButton;
     private int currentBoyIndex;
     private Scene selfScene;
+    private int availableSteps = 2;
+    private int oppoSteps = 2;
+
+    private void resetAvailableSteps(){
+        availableSteps = 2;
+    }
+
+    private void resetOppoSteps(){
+        oppoSteps = 2;
+    }
 
     @FXML
     public void initialize(Scene scene){
@@ -32,7 +37,9 @@ public class MainController {
             ((Label)selfScene.lookup("#Camp")).setText("妖怪阵营");
             ((Label)selfScene.lookup("#Turn")).setText("对方回合");
             GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
-            waitForResponse();
+            for(int i = 0; i < oppoSteps; ++i) {
+                waitForResponse();
+            }
         }
         else{
             ((Label)selfScene.lookup("#Camp")).setText("葫芦娃阵营");
@@ -64,6 +71,7 @@ public class MainController {
         int currentY = 0;
         if(GameManager.getInstance().turn==GameManager.Turn.SELF) {
             if (currentButton != null) {
+                availableSteps--;
                 //Update UI first
                 GridPane.setColumnIndex(currentButton, clickCol);
                 GridPane.setRowIndex(currentButton, clickRow);
@@ -82,8 +90,11 @@ public class MainController {
     }
 
     private void waitForResponse(){
-        ((Label)selfScene.lookup("#Turn")).setText("对方回合");
-        GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
+        if(availableSteps <= 0) {
+            ((Label) selfScene.lookup("#Turn")).setText("对方回合");
+            GameManager.getInstance().turn = GameManager.Turn.OPPOSITE;
+            resetOppoSteps();
+        }
         Task<Void> t = new Task<Void>() {
             Message m;
             @Override
@@ -100,6 +111,7 @@ public class MainController {
 
             @Override
             protected void succeeded(){
+                oppoSteps--;
                 if(m.getKind()==Message.Kind.MOVE){
                     MoveMsg moveMsg = (MoveMsg)m;
                     //TODO: main logic after receiving message
@@ -107,8 +119,11 @@ public class MainController {
                     System.out.println("object:"+moveMsg.getObjectId()+" from:("+moveMsg.getFromX()+","+moveMsg.getFromY()+") to:("+moveMsg.getToX()+","+moveMsg.getToY()+")");
                     Button object = (Button)selfScene.lookup("#"+moveMsg.getObjectId());
                     moveObject(object,moveMsg.getToX(),moveMsg.getToY());
-                    ((Label)selfScene.lookup("#Turn")).setText("你的回合");
-                    GameManager.getInstance().turn=GameManager.Turn.SELF;
+                    if(oppoSteps <= 0) {
+                        ((Label) selfScene.lookup("#Turn")).setText("你的回合");
+                        GameManager.getInstance().turn = GameManager.Turn.SELF;
+                        resetAvailableSteps();
+                    }
                 }
             }
         };
