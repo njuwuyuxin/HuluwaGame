@@ -98,7 +98,7 @@ public class MainController {
         Task<Void> t = new Task<Void>() {
             Message m;
             @Override
-            protected Void call() throws Exception {
+            protected synchronized Void call() throws Exception {
                 while (true){
                     m = GameManager.getInstance().getNetClient().recvMsg();
                     if(m!=null){
@@ -110,7 +110,7 @@ public class MainController {
             }
 
             @Override
-            protected void succeeded(){
+            protected synchronized void succeeded(){
                 oppoSteps--;
                 if(m.getKind()==Message.Kind.MOVE){
                     MoveMsg moveMsg = (MoveMsg)m;
