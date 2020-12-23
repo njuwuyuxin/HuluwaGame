@@ -6,7 +6,6 @@ import static com.edu.nju.huluwa.roles.FighterFactory.FighterType.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class FighterList<T extends Fighter> implements Iterable{
     List<T> roles;
@@ -23,7 +22,7 @@ public class FighterList<T extends Fighter> implements Iterable{
 
     public boolean hasLiveFighter(){
         for(T fighter : roles){
-            if(fighter.isLive()){
+            if(fighter.isAlive()){
                 return true;
             }
         }
@@ -41,25 +40,33 @@ public class FighterList<T extends Fighter> implements Iterable{
         fighters.add(factory.create(DEFHULUWA, "六娃"));
         fighters.add(factory.create(DEFHULUWA, "七娃"));
         fighters.add(factory.create(GRANDPA, "爷爷"));
+        // set pos
+        int x = 0, y = 1;
+        for(Object f : fighters){
+            ((Human) f).moveTo(x, y);
+            ++y;
+        }
         return fighters;
     }
 
     public static FighterList<Monster> genMonsterFighters(){
         FighterList<Monster> fighters = new FighterList<>();
         MonsterFactory factory = new MonsterFactory();
-        fighters.add(factory.create(SNAKE, "蛇精"));
+        fighters.add(factory.create(MINION, "喽啰"));
+        fighters.add(factory.create(MINION, "喽啰"));
         fighters.add(factory.create(SCORPION, "蝎子精"));
+        fighters.add(factory.create(SNAKE, "蛇精"));
         fighters.add(factory.create(MINION, "喽啰"));
         fighters.add(factory.create(MINION, "喽啰"));
         fighters.add(factory.create(MINION, "喽啰"));
         fighters.add(factory.create(MINION, "喽啰"));
-        fighters.add(factory.create(MINION, "喽啰"));
-        fighters.add(factory.create(MINION, "喽啰"));
+        // set pos
+        int x = 9, y = 1;
+        for(Object f : fighters){
+            ((Monster) f).moveTo(x, y);
+            ++y;
+        }
         return fighters;
-    }
-
-    void battleFormation(){
-        // TODO - 让每个角色列阵（改变x, y的值)
     }
 
     @Override

@@ -7,11 +7,11 @@ public abstract class Fighter {
     // init by setAttr()
     String name = null;
     int hp;
+    int maxHp;
     int atk;
     int def;
     int moveRange;
     int attackRange;
-    String picturePath = null;
 
     int x, y;
     // init automatically
@@ -21,11 +21,11 @@ public abstract class Fighter {
     void setAttr(String name, int hp, int atk, int def, int moveRange, int attackRange){
         this.name = name;
         this.hp = hp;
+        this.maxHp = hp;
         this.atk = atk;
         this.def = def;
         this.moveRange = moveRange;
         this.attackRange = attackRange;
-        this.picturePath = null; // TODO - 修改具体文件路径
     }
 
     public String getName() {
@@ -84,12 +84,12 @@ public abstract class Fighter {
         this.id = id;
     }
 
-    public boolean isLive() {
-        return hp > 0;
-    }
+    public int getX() { return x; }
 
-    public int calDamage(Fighter target){
-        return getAtk() - target.getDef();
+    public int getY() { return y; }
+
+    public boolean isAlive() {
+        return hp > 0;
     }
 
     public void moveTo(int x, int y){
@@ -97,5 +97,25 @@ public abstract class Fighter {
         this.x = x;
         this.y = y;
         BattleGround.v().setFighterOn(x, y, this);
+    }
+
+    public boolean canMoveTo(int x, int y){
+        int dist = Math.abs(this.x - x) + Math.abs(this.y - y);
+        return dist <= this.moveRange;
+    }
+
+    public boolean canAttack(Fighter f){
+        int dist = Math.abs(x - f.getX()) + Math.abs(y - f.getY());
+        return dist <= this.attackRange;
+    }
+
+    public void getDemage(int demage){
+        this.hp -= demage;
+        return;
+    }
+
+    public void attack(Fighter defender){
+        int demage = atk - defender.getDef();
+        return;
     }
 }

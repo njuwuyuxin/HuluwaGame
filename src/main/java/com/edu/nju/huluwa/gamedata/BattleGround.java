@@ -17,7 +17,7 @@ class Grid{
 public class BattleGround {
     public static final int length = 10;
     public static final int width = 10;
-    Grid[][] ground;
+    private static Grid[][] ground;
 
     private static BattleGround INSTANCE = new BattleGround();
 
@@ -34,17 +34,18 @@ public class BattleGround {
         return INSTANCE;
     }
 
-    public Fighter getFighterOn(int x, int y){
+    public static Fighter getFighterOn(int x, int y){
         return ground[x][y].getFighter();
     }
 
-    public void removeFighterOn(int x, int y){
+    public static void removeFighterOn(int x, int y){
         ground[x][y].setFighter(null);
     }
 
-    public void setFighterOn(int x, int y, Fighter fighter){
+    public static void setFighterOn(int x, int y, Fighter fighter){
         assert(ground[x][y].getFighter() == null);
         ground[x][y].setFighter(fighter);
 
     }
+
 }

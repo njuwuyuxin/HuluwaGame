@@ -6,7 +6,7 @@ public class AttackMsg implements Message {
     int targetX, targetY;
     String fromId;
     String toId;
-    public AttackMsg(int fromX, int fromY, int targetX, int targetY,String fromId,String toId){
+    public AttackMsg(int fromX, int fromY, int targetX, int targetY, String fromId, String toId){
         this.fromX = fromX;
         this.fromY = fromY;
         this.targetX = targetX;

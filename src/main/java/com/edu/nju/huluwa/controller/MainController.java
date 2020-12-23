@@ -1,9 +1,12 @@
 package com.edu.nju.huluwa.controller;
 
 import com.edu.nju.huluwa.GameManager;
+import com.edu.nju.huluwa.gamedata.BattleGround;
 import com.edu.nju.huluwa.network.AttackMsg;
+import com.edu.nju.huluwa.network.EndMsg;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.MoveMsg;
+import com.edu.nju.huluwa.roles.Fighter;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -58,7 +61,8 @@ public class MainController {
         }
         //点击对方阵营按钮,进行攻击
         else if(GameManager.getInstance().turn == GameManager.Turn.SELF &&
-                GameManager.getInstance().phase == GameManager.Phase.ATTACK && currentButton!=null){
+                GameManager.getInstance().phase == GameManager.Phase.ATTACK && currentButton!=null &&
+                getFighter(currentButton).canAttack(getFighter(btnSource))){
             System.out.println(currentButton.getId()+" attack "+btnSource.getId());
             //TODO: Attack Logic and UI Update
             attack(currentButton,btnSource);
@@ -88,7 +92,9 @@ public class MainController {
         int clickRow = (int)event.getSceneY()/100;
         int currentX = 0;
         int currentY = 0;
-        if(GameManager.getInstance().turn==GameManager.Turn.SELF&&GameManager.getInstance().phase==GameManager.Phase.MOVE) {
+        if(GameManager.getInstance().turn==GameManager.Turn.SELF &&
+                GameManager.getInstance().phase==GameManager.Phase.MOVE &&
+                getFighter(currentButton).canMoveTo(clickCol, clickRow)) {
             if (currentButton != null) {
                 availableSteps--;
                 moveObject(currentButton,clickCol,clickRow);
@@ -141,13 +147,15 @@ public class MainController {
 
     //move main logic
     private void moveObject(Button object,int toX,int toY){
+        getFighter(object).moveTo(toX, toY);
         GridPane.setColumnIndex(object,toX);
         GridPane.setRowIndex(object,toY);
     }
-
     //attack main logic
     private void attack(Button source, Button target){
-
+        Fighter attacker = getFighter(source);
+        Fighter defender = getFighter(target);
+        attacker.attack(defender);
     }
 
     private void changeTurnTo(GameManager.Turn turn){
@@ -170,6 +178,13 @@ public class MainController {
             ((Label) selfScene.lookup("#Phase")).setText("攻击阶段");
             GameManager.getInstance().phase = GameManager.Phase.ATTACK;
         }
+    }
+
+    public void HandleTurnOverButton(ActionEvent actionEvent) {
+        Message endMsg = new EndMsg();
+        GameManager.getInstance().getNetClient().sendMsg(endMsg);
+        changePhaseTo(GameManager.Phase.MOVE);
+        waitForResponse();
     }
 
     class ReceiveMsgTask extends Task<Void>{
@@ -215,5 +230,12 @@ public class MainController {
                 }
             }
         }
+    }
+
+    private Fighter getFighter(Button button){
+        int x = GridPane.getColumnIndex(button);
+        int y = GridPane.getRowIndex(button);
+        Fighter f = BattleGround.getFighterOn(x, y);
+        return f;
     }
 }

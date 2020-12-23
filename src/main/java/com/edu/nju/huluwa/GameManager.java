@@ -1,7 +1,9 @@
 package com.edu.nju.huluwa;
 
+import com.edu.nju.huluwa.gamedata.FighterList;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.NetClient;
+import com.edu.nju.huluwa.roles.Fighter;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -18,6 +20,10 @@ public class GameManager {
     private NetMode netMode;
     public Turn turn;
     public Phase phase;
+
+    private FighterList<? extends Fighter> humans = FighterList.genHumanFighters();
+    private FighterList<? extends Fighter> monsters = FighterList.genMonsterFighters();
+
     private GameManager(){
         nc = new NetClient();
     }
@@ -55,5 +61,13 @@ public class GameManager {
 
     public NetMode getNetMode(){
         return netMode;
+    }
+
+    public boolean isMyTurn(){
+        return turn == Turn.SELF;
+    }
+
+    public void changeTurn(){
+        turn = (turn == Turn.SELF) ? Turn.OPPOSITE : Turn.SELF;
     }
 }
