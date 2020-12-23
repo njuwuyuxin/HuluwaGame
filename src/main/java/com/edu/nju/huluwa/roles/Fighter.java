@@ -2,6 +2,9 @@ package com.edu.nju.huluwa.roles;
 
 
 import com.edu.nju.huluwa.gamedata.BattleGround;
+import com.edu.nju.huluwa.gamedata.Pos;
+
+import java.util.ArrayList;
 
 public abstract class Fighter {
     // init by setAttr()
@@ -100,6 +103,7 @@ public abstract class Fighter {
     }
 
     public boolean canMoveTo(int x, int y){
+        if(BattleGround.getFighterOn(x, y) != null) return false;
         int dist = Math.abs(this.x - x) + Math.abs(this.y - y);
         return dist <= this.moveRange;
     }
@@ -119,5 +123,17 @@ public abstract class Fighter {
         defender.getDemage(demage);
         System.out.println(name + " 攻击了 " + defender.getName() + " 造成了" + demage + "点伤害，还剩" + defender.getHp());
         return;
+    }
+
+    public ArrayList<Pos> reachableGrid(){
+        ArrayList<Pos> reachable = new ArrayList<>();
+        for(int x = 0; x < BattleGround.length; ++x){
+            for(int y = 0; y < BattleGround.width; ++y){
+                if(canMoveTo(x, y)){
+                    reachable.add(new Pos(x, y));
+                }
+            }
+        }
+        return reachable;
     }
 }

@@ -39,7 +39,7 @@ public class FighterList<T extends Fighter> implements Iterable{
         fighters.add(factory.create(HULUWA, "五娃", "boy5"));
         fighters.add(factory.create(DEFHULUWA, "六娃", "boy6"));
         fighters.add(factory.create(DEFHULUWA, "七娃", "boy7"));
-        fighters.add(factory.create(GRANDPA, "爷爷", "grandpa"));
+        // fighters.add(factory.create(GRANDPA, "爷爷", "grandpa"));
         // set pos
         int x = 0, y = 1;
         for(Object f : fighters){
