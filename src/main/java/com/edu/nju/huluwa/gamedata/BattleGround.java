@@ -48,4 +48,8 @@ public class BattleGround {
 
     }
 
+    public static void removeFighter(Fighter f){
+        removeFighterOn(f.getX(), f.getY());
+    }
+
 }

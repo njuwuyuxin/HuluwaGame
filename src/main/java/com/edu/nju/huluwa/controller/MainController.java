@@ -41,9 +41,7 @@ public class MainController {
         if(GameManager.getInstance().getNetMode()== GameManager.NetMode.SERVER) {
             ((Label)selfScene.lookup("#Camp")).setText("妖怪阵营");
             changeTurnTo(GameManager.Turn.OPPOSITE);
-            for(int i = 0; i < oppoSteps; ++i) {
-                waitForResponse();
-            }
+            waitForResponse();
         }
         else{
             ((Label)selfScene.lookup("#Camp")).setText("葫芦娃阵营");
@@ -94,10 +92,8 @@ public class MainController {
         int currentX = 0;
         int currentY = 0;
         if(GameManager.getInstance().turn==GameManager.Turn.SELF &&
-                GameManager.getInstance().phase==GameManager.Phase.MOVE &&
-                getFighter(currentButton).canMoveTo(clickCol, clickRow)) {
-            if (currentButton != null) {
-                availableSteps--;
+                GameManager.getInstance().phase==GameManager.Phase.MOVE) {
+            if (currentButton != null && getFighter(currentButton).canMoveTo(clickCol, clickRow)) {
                 moveObject(currentButton,clickCol,clickRow);
                 //Then send message
                 currentX = GridPane.getColumnIndex(currentButton);
@@ -114,11 +110,25 @@ public class MainController {
         }
     }
 
-    private void waitForResponse(){
-        if(availableSteps <= 0) {
-            changeTurnTo(GameManager.Turn.OPPOSITE);
-            resetOppoSteps();
+    public void HandleTurnOverButton(ActionEvent actionEvent) {
+        if(!GameManager.getInstance().isMyTurn()) return;
+        if(GameManager.getInstance().inMovePhase()){
+            changePhaseTo(GameManager.Phase.ATTACK);
+            Message endMsg = new EndMsg();
+            GameManager.getInstance().getNetClient().sendMsg(endMsg);
         }
+        else if(GameManager.getInstance().inAttackPhase()){
+            changePhaseTo(GameManager.Phase.MOVE);
+            Message endMsg = new EndMsg();
+            GameManager.getInstance().getNetClient().sendMsg(endMsg);
+            waitForResponse();
+        }
+
+    }
+
+    private void waitForResponse(){
+        changeTurnTo(GameManager.Turn.OPPOSITE);
+        resetOppoSteps();
         //创建两个线程分别处理move请求和attack请求
         Task<Void> t1 = new ReceiveMsgTask();
         Task<Void> t2 = new ReceiveMsgTask();
@@ -157,14 +167,15 @@ public class MainController {
         Fighter attacker = getFighter(source);
         Fighter defender = getFighter(target);
         attacker.attack(defender);
-        System.out.println(source.getId()+" attack "+target.getId());
-        //temp test
-        objectDie(target);
+        if(!defender.isAlive()) {
+            System.out.println(target.getId() + " go die!");
+            objectDie(target);
+        }
     }
 
     private void objectDie(Button object){
         ((GridPane)selfScene.lookup("#board")).getChildren().remove(object);
-        //TODO: Die logic
+        BattleGround.removeFighter(getFighter(object));
     }
 
     private void changeTurnTo(GameManager.Turn turn){
@@ -189,12 +200,6 @@ public class MainController {
         }
     }
 
-    public void HandleTurnOverButton(ActionEvent actionEvent) {
-        Message endMsg = new EndMsg();
-        GameManager.getInstance().getNetClient().sendMsg(endMsg);
-        changePhaseTo(GameManager.Phase.MOVE);
-        waitForResponse();
-    }
 
     class ReceiveMsgTask extends Task<Void>{
         Message m;
@@ -222,7 +227,7 @@ public class MainController {
                 moveObject(object,moveMsg.getToX(),moveMsg.getToY());
 
                 changePhaseTo(GameManager.Phase.ATTACK);
-
+                // waitForResponse();
             }
             else if(m.getKind()==Message.Kind.ATTACK){
                 AttackMsg attackMsg = (AttackMsg)m;
@@ -233,9 +238,15 @@ public class MainController {
                 attack(source,target);
 
                 changePhaseTo(GameManager.Phase.MOVE);
-                if(oppoSteps <= 0) {
+                changeTurnTo(GameManager.Turn.SELF);
+            }
+            else if(m.getKind() == Message.Kind.END){
+                if(GameManager.getInstance().inMovePhase()){
+                    changePhaseTo(GameManager.Phase.ATTACK);
+                }
+                else if(GameManager.getInstance().inAttackPhase()){
+                    changePhaseTo(GameManager.Phase.MOVE);
                     changeTurnTo(GameManager.Turn.SELF);
-                    resetAvailableSteps();
                 }
             }
         }

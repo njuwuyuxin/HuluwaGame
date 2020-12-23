@@ -5,7 +5,8 @@ import com.edu.nju.huluwa.gamedata.BattleGround;
 
 public abstract class Fighter {
     // init by setAttr()
-    String name = null;
+    String name;
+    String id;
     int hp;
     int maxHp;
     int atk;
@@ -14,12 +15,11 @@ public abstract class Fighter {
     int attackRange;
 
     int x, y;
-    // init automatically
-    int id; // the index of Human/Monster in FighterList<Human>/FighterList<Monster>
 
 
-    void setAttr(String name, int hp, int atk, int def, int moveRange, int attackRange){
+    void setAttr(String name, String id, int hp, int atk, int def, int moveRange, int attackRange){
         this.name = name;
+        this.id = id;
         this.hp = hp;
         this.maxHp = hp;
         this.atk = atk;
@@ -76,11 +76,11 @@ public abstract class Fighter {
         this.attackRange = attackRange;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -116,6 +116,8 @@ public abstract class Fighter {
 
     public void attack(Fighter defender){
         int demage = atk - defender.getDef();
+        defender.getDemage(demage);
+        System.out.println(name + " 攻击了 " + defender.getName() + " 造成了" + demage + "点伤害，还剩" + defender.getHp());
         return;
     }
 }

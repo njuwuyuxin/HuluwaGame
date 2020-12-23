@@ -70,4 +70,14 @@ public class GameManager {
     public void changeTurn(){
         turn = (turn == Turn.SELF) ? Turn.OPPOSITE : Turn.SELF;
     }
+
+    public boolean inMovePhase(){ return phase == Phase.MOVE; }
+
+    public boolean inAttackPhase(){ return phase == Phase.ATTACK; }
+
+    /*public void goToNextPhase(){
+        if(inMovePhase()) phase = Phase.ATTACK;
+        else if(inAttackPhase()) phase = Phase.MOVE;
+    }*/
+
 }
