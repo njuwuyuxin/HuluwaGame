@@ -64,6 +64,7 @@ public class MainController {
                 GameManager.getInstance().phase == GameManager.Phase.ATTACK && currentButton!=null &&
                 getFighter(currentButton).canAttack(getFighter(btnSource))){
             System.out.println(currentButton.getId()+" attack "+btnSource.getId());
+
             //TODO: Attack Logic and UI Update
             attack(currentButton,btnSource);
 
@@ -156,6 +157,14 @@ public class MainController {
         Fighter attacker = getFighter(source);
         Fighter defender = getFighter(target);
         attacker.attack(defender);
+        System.out.println(source.getId()+" attack "+target.getId());
+        //temp test
+        objectDie(target);
+    }
+
+    private void objectDie(Button object){
+        ((GridPane)selfScene.lookup("#board")).getChildren().remove(object);
+        //TODO: Die logic
     }
 
     private void changeTurnTo(GameManager.Turn turn){

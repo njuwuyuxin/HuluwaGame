@@ -20,7 +20,7 @@
                         <Image url="@image/bg.png" />
                     </image>
                 </ImageView>
-                <GridPane onMouseClicked="#gridClicked" prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
+                <GridPane fx:id="board" onMouseClicked="#gridClicked" prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
