@@ -59,7 +59,6 @@ public class MainController {
         //点击对方阵营按钮,进行攻击
         else if(GameManager.getInstance().turn == GameManager.Turn.SELF &&
                 GameManager.getInstance().phase == GameManager.Phase.ATTACK && currentButton!=null){
-            System.out.println(currentButton.getId()+" attack "+btnSource.getId());
             //TODO: Attack Logic and UI Update
             attack(currentButton,btnSource);
 
@@ -147,7 +146,14 @@ public class MainController {
 
     //attack main logic
     private void attack(Button source, Button target){
+        System.out.println(source.getId()+" attack "+target.getId());
+        //temp test
+        objectDie(target);
+    }
 
+    private void objectDie(Button object){
+        ((GridPane)selfScene.lookup("#board")).getChildren().remove(object);
+        //TODO: Die logic
     }
 
     private void changeTurnTo(GameManager.Turn turn){
