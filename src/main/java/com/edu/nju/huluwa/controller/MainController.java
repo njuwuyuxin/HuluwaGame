@@ -5,6 +5,7 @@ import com.edu.nju.huluwa.network.AttackMsg;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.MoveMsg;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,11 +16,14 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.input.MouseEvent;
 
+import java.util.ArrayList;
+
 public class MainController {
     private Button currentButton;
     private Scene selfScene;
     private int availableSteps = 1;
     private int oppoSteps = 1;
+    private ArrayList<Button> rangeButtons;
 
     private void resetAvailableSteps(){
         availableSteps = 1;
@@ -32,6 +36,7 @@ public class MainController {
     @FXML
     public void initialize(Scene scene){
         selfScene = scene;
+        rangeButtons = new ArrayList<Button>();
         System.out.println(GameManager.getInstance().getNetMode());
         changePhaseTo(GameManager.Phase.MOVE);
 
@@ -52,9 +57,30 @@ public class MainController {
     public void handleObjectButton(ActionEvent event){
         Button btnSource = (Button) event.getSource();
         System.out.println(btnSource.getId());
-        //点击己方阵营按钮,选中单位
-        if(checkObjectCamp(btnSource)){
-            currentButton = btnSource;
+        if(!checkObjectCamp(btnSource)){
+            hideMoveRange();
+        }
+        //在自己回合点击己方阵营按钮,选中单位
+        if(GameManager.getInstance().turn == GameManager.Turn.SELF && checkObjectCamp(btnSource)){
+            //点击新按钮
+            if(currentButton == null) {
+                currentButton = btnSource;
+                if (GameManager.getInstance().phase == GameManager.Phase.MOVE){
+                    System.out.println(GameManager.getInstance().turn);
+                    showMoveRange(btnSource);
+                }
+            }
+            //点击了其他己方按钮
+            else if(currentButton != btnSource){
+                currentButton = btnSource;
+                showMoveRange(currentButton);
+            }
+            //二次点击同一按钮视为取消选择
+            else{
+                hideMoveRange();
+                currentButton = null;
+            }
+
         }
         //点击对方阵营按钮,进行攻击
         else if(GameManager.getInstance().turn == GameManager.Turn.SELF &&
@@ -74,36 +100,16 @@ public class MainController {
         }
         else{
             currentButton = null;
+            hideMoveRange();
         }
         //TODO: get boy object using row,col info
         //currentObject = xxx.getObject(row,col);
     }
 
-    //handle move operation
     @FXML
     public void gridClicked(MouseEvent event) {
-        //cal grid position with mouse position
-        int clickCol = (int)event.getSceneX()/100;
-        int clickRow = (int)event.getSceneY()/100;
-        int currentX = 0;
-        int currentY = 0;
-        if(GameManager.getInstance().turn==GameManager.Turn.SELF&&GameManager.getInstance().phase==GameManager.Phase.MOVE) {
-            if (currentButton != null) {
-                availableSteps--;
-                moveObject(currentButton,clickCol,clickRow);
-                //Then send message
-                currentX = GridPane.getColumnIndex(currentButton);
-                currentY = GridPane.getRowIndex(currentButton);
-                Message moveMsg = new MoveMsg(currentButton.getId(),currentX, currentY, clickCol, clickRow);
-                GameManager.getInstance().getNetClient().sendMsg(moveMsg);
-
-                changePhaseTo(GameManager.Phase.ATTACK);
-                currentButton = null;
-            }
-        }
-        else{
-            currentButton = null;
-        }
+        currentButton = null;
+        hideMoveRange();
     }
 
     private void waitForResponse(){
@@ -136,6 +142,45 @@ public class MainController {
                 return false;
         }
         return false;
+    }
+
+    private void showMoveRange(Button object){
+        //first clear
+        hideMoveRange();
+
+        System.out.println("show move range!");
+        //temp test data
+        GridPane board = ((GridPane)selfScene.lookup("#board"));
+        ArrayList<Integer> col = new ArrayList<Integer>();
+        col.add(3);
+        col.add(3);
+        col.add(4);
+        col.add(4);
+        ArrayList<Integer> row = new ArrayList<Integer>();
+        row.add(3);
+        row.add(4);
+        row.add(3);
+        row.add(4);
+        //**********//
+        for(int i=0;i<col.size();i++){
+            System.out.println("create range button");
+            Button range = new Button();
+            RangeButtonHandler handler = new RangeButtonHandler();
+            range.setOnAction(handler);
+            board.getChildren().add(range);
+            GridPane.setColumnIndex(range,col.get(i));
+            GridPane.setRowIndex(range,row.get(i));
+            range.setStyle("-fx-background-color:green; -fx-opacity:0.5");
+            rangeButtons.add(range);
+        }
+    }
+
+    private void hideMoveRange(){
+        GridPane board = ((GridPane)selfScene.lookup("#board"));
+        for(Button b:rangeButtons){
+            board.getChildren().remove(b);
+        }
+        rangeButtons.clear();
     }
 
     //move main logic
@@ -219,6 +264,32 @@ public class MainController {
                     changeTurnTo(GameManager.Turn.SELF);
                     resetAvailableSteps();
                 }
+            }
+        }
+    }
+
+    //handle move operation
+    private class RangeButtonHandler implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event){
+            Button btnSource = (Button)event.getSource();
+            if(GameManager.getInstance().turn==GameManager.Turn.SELF&&GameManager.getInstance().phase==GameManager.Phase.MOVE) {
+                if (currentButton != null) {
+                    availableSteps--;
+                    int currentX = GridPane.getColumnIndex(currentButton);
+                    int currentY = GridPane.getRowIndex(currentButton);
+                    int targetX = GridPane.getColumnIndex(btnSource);
+                    int targetY = GridPane.getRowIndex(btnSource);
+                    moveObject(currentButton,targetX,targetY);
+                    Message moveMsg = new MoveMsg(currentButton.getId(),currentX, currentY, targetX, targetY);
+                    GameManager.getInstance().getNetClient().sendMsg(moveMsg);
+                    changePhaseTo(GameManager.Phase.ATTACK);
+                    hideMoveRange();
+                    currentButton = null;
+                }
+            }
+            else{
+                currentButton = null;
             }
         }
     }
