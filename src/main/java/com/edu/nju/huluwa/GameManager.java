@@ -4,6 +4,7 @@ import com.edu.nju.huluwa.gamedata.FighterList;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.NetClient;
 import com.edu.nju.huluwa.roles.Fighter;
+import com.edu.nju.huluwa.roles.Monster;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -75,9 +76,14 @@ public class GameManager {
 
     public boolean inAttackPhase(){ return phase == Phase.ATTACK; }
 
-    /*public void goToNextPhase(){
-        if(inMovePhase()) phase = Phase.ATTACK;
-        else if(inAttackPhase()) phase = Phase.MOVE;
-    }*/
+    public boolean gameIsOver(){
+        return !humans.hasLiveFighter() || !monsters.hasLiveFighter();
+    }
+
+    public String getWinner(){
+        assert(gameIsOver());
+        if(humans.hasLiveFighter()) return "葫芦娃";
+        else return "妖怪";
+    }
 
 }

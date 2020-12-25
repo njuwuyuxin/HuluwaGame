@@ -105,6 +105,8 @@ public class MainController {
             int targetY = GridPane.getRowIndex(btnSource);
             Message attackMsg = new AttackMsg(currentX,currentY,targetX,targetY,currentButton.getId(),btnSource.getId());
             GameManager.getInstance().getNetClient().sendMsg(attackMsg);
+            checkGameOver();
+
             changePhaseTo(GameManager.Phase.MOVE);
             waitForResponse();
         }
@@ -112,8 +114,6 @@ public class MainController {
             currentButton = null;
             hideMoveRange();
         }
-        //TODO: get boy object using row,col info
-        //currentObject = xxx.getObject(row,col);
     }
 
     @FXML
@@ -217,6 +217,15 @@ public class MainController {
         ((Label) selfScene.lookup("#moveRange")).setText("");
     }
 
+    private void checkGameOver(){
+        if(GameManager.getInstance().gameIsOver()) {
+            Label info = ((Label) selfScene.lookup("#GameOver"));
+            String winner = GameManager.getInstance().getWinner();
+            info.setText("Game Over!\n" + winner + "胜！");
+            info.setVisible(true);
+        }
+    }
+
     //move main logic
     private void moveObject(Button object,int toX,int toY){
         getFighter(object).moveTo(toX, toY);
@@ -297,6 +306,7 @@ public class MainController {
                 Button target = (Button)selfScene.lookup("#"+attackMsg.getToId());
                 //TODO: main logic after receiving attack message
                 attack(source,target);
+                checkGameOver();
 
                 changePhaseTo(GameManager.Phase.MOVE);
                 changeTurnTo(GameManager.Turn.SELF);

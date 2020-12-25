@@ -69,6 +69,11 @@ Button{
     -fx-font-weight: bold;
 }
 
+#SkipPhase{
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
 #GameOver{
     -fx-pref-width: 400px;
     -fx-font-size: 60px;
@@ -79,4 +84,19 @@ Button{
     -fx-pref-width:400px;
     -fx-font-size:22px;
     -fx-font-weight:bold;
+}
+#hp{
+    -fx-pref-width:400px;
+}
+#atk{
+    -fx-pref-width:400px;
+}
+#def{
+    -fx-pref-width:400px;
+}
+#atkRange{
+    -fx-pref-width:400px;
+}
+#moveRange{
+    -fx-pref-width:400px;
 }
