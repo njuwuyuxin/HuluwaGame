@@ -144,8 +144,12 @@ public class MainController {
         //创建两个线程分别处理move请求和attack请求
         Task<Void> t1 = new ReceiveMsgTask();
         Task<Void> t2 = new ReceiveMsgTask();
-        new Thread(t1).start();
-        new Thread(t2).start();
+        Thread thread1 = new Thread(t1);
+        thread1.setDaemon(true);
+        Thread thread2 = new Thread(t2);
+        thread2.setDaemon(true);
+        thread1.start();
+        thread2.start();
     }
 
     private boolean checkObjectCamp(Button object){

@@ -132,6 +132,9 @@ public class NetClient {
     }
 
     private class SendPktThread extends Thread {
+        public SendPktThread(){
+            setDaemon(true);
+        }
 
         @Override
         public void run(){
@@ -160,6 +163,9 @@ public class NetClient {
     }
 
     private class RecvPktThread extends Thread {
+        public RecvPktThread(){
+            setDaemon(true);
+        }
         @Override
         public void run(){
             try(
