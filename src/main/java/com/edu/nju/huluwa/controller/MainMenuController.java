@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -40,5 +42,17 @@ public class MainMenuController {
     @FXML
     public void handleGameExitButton(ActionEvent event){
         Platform.exit();
+    }
+
+    @FXML
+    public void handleReplayButton(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("打开游戏记录文件");
+        fileChooser.setInitialDirectory(new File("saves/"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("TXT files", "*.txt")
+        );
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        File file = fileChooser.showOpenDialog(currentStage);
     }
 }

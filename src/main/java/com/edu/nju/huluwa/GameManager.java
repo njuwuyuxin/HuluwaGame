@@ -22,11 +22,13 @@ public class GameManager {
     public Turn turn;
     public Phase phase;
 
-    private FighterList<? extends Fighter> humans = FighterList.genHumanFighters();
-    private FighterList<? extends Fighter> monsters = FighterList.genMonsterFighters();
+    private FighterList<? extends Fighter> humans;
+    private FighterList<? extends Fighter> monsters;
 
     private GameManager(){
         nc = new NetClient();
+        humans = FighterList.genHumanFighters();
+        monsters = FighterList.genMonsterFighters();
     }
 
     public static GameManager getInstance(){
@@ -39,6 +41,10 @@ public class GameManager {
 
     public void setPrimaryStage(Stage stage){
         primaryStage = stage;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public void handleReceiveMessage(Message msg){
@@ -68,10 +74,6 @@ public class GameManager {
         return turn == Turn.SELF;
     }
 
-    public void changeTurn(){
-        turn = (turn == Turn.SELF) ? Turn.OPPOSITE : Turn.SELF;
-    }
-
     public boolean inMovePhase(){ return phase == Phase.MOVE; }
 
     public boolean inAttackPhase(){ return phase == Phase.ATTACK; }
@@ -85,5 +87,4 @@ public class GameManager {
         if(humans.hasLiveFighter()) return "葫芦娃";
         else return "妖怪";
     }
-
 }

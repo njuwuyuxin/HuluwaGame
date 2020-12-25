@@ -1,6 +1,7 @@
 package com.edu.nju.huluwa.network;
 
 import com.edu.nju.huluwa.GameManager;
+import com.edu.nju.huluwa.utils.GameLogger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -62,6 +63,7 @@ public class NetClient {
     public void sendMsg(Message msg){
         sendQueueLock.lock();
         try{
+            //GameLogger.v().log(msg);
             sendQueue.offer(msg);
             System.out.println("add msg to sendQueue");
         } finally {
@@ -75,6 +77,7 @@ public class NetClient {
         try {
             if(!recvQueue.isEmpty()){
                 msg = recvQueue.poll();
+                //GameLogger.v().log(msg);
             }
         } finally {
             recvQueueLock.unlock();

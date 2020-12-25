@@ -27,9 +27,15 @@
                      </font>
                   </Label>
                        <Button mnemonicParsing="false" onAction="#handleGameStartButton" text="开始游戏">
-                     <VBox.margin>
-                        <Insets bottom="50.0" top="120.0" />
-                     </VBox.margin></Button>
+                            <VBox.margin>
+                                <Insets bottom="20.0" top="230.0" />
+                            </VBox.margin>
+                       </Button>
+                       <Button mnemonicParsing="false" onAction="#handleReplayButton" text="记录回放">
+                           <VBox.margin>
+                               <Insets bottom="20.0" top="0.0" />
+                           </VBox.margin>
+                       </Button>
                        <Button mnemonicParsing="false" onAction="#handleGameExitButton" text="退出游戏" />
                    </children>
                </VBox>
