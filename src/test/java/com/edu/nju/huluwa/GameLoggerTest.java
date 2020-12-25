@@ -6,25 +6,31 @@ import com.edu.nju.huluwa.network.MoveMsg;
 import javafx.scene.control.Button;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
+import java.nio.*;
 
 public class GameLoggerTest {
     @Test
-    public void IOTest(){
+    public void IOTest() throws Exception{
+        File f = new File("saves/a.txt");
+            f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f);
+            out.write(2);
+            out.write(3);
+            out.close();
 
     }
 
-    //@Test
+    @Test
     public void testLogger(){
-        File saveFile = new File("save/test.txt");
+        File saveFile = new File("saves/test.txt");
         try (
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveFile));
         ){
             Message m;
-            while((m = (Message) in.readObject()) != null){
+            in.available();
+            while(in.available() > 0){
+                m = (Message) in.readObject();
                 if(m.getKind()==Message.Kind.MOVE){
                     MoveMsg moveMsg = (MoveMsg)m;
                     System.out.println("Receive Move Message:");

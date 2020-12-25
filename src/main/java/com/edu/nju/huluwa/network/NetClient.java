@@ -150,6 +150,7 @@ public class NetClient {
                         if(!sendQueue.isEmpty()){
                             Message msg = sendQueue.poll();
                             out.writeObject(msg);
+                            GameLogger.v().log(msg);
                             System.out.println("already send the msg");
                             // TODO - add log
                             out.flush();
@@ -177,6 +178,7 @@ public class NetClient {
                 while(running){
                     Message msg = (Message) in.readObject();
                     System.out.println("receive msg, msg type : " + msg.getKind());
+                    GameLogger.v().log(msg);
                     GameManager.getInstance().handleReceiveMessage(msg);
                     recvQueueLock.lock();
                     try {

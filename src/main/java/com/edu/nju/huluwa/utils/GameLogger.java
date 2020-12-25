@@ -1,10 +1,14 @@
 package com.edu.nju.huluwa.utils;
 
 import com.edu.nju.huluwa.network.Message;
+import com.sun.xml.internal.ws.util.xml.CDATA;
 
+import java.nio.file.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static java.lang.System.exit;
 
 public class GameLogger {
     File log_file;
@@ -14,11 +18,15 @@ public class GameLogger {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat();
         formatter.applyPattern("yyyy-MM-dd HH-mm-ss");
+        File log_dir = new File("saves");
+        if(!log_dir.exists()) log_dir.mkdir();
         log_file = new File("saves/" + formatter.format(date) + ".txt");
         try {
             System.out.println(log_file.getAbsolutePath());
+
             log_file.createNewFile();
             out = new ObjectOutputStream(new FileOutputStream(log_file));
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -26,10 +34,26 @@ public class GameLogger {
         }
     }
 
+//    private GameLogger(){
+//        Date date = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat();
+//        formatter.applyPattern("yyyy-MM-dd HH-mm-ss");
+//        Path p = Paths.get("saves/" + formatter.format(date) + ".txt");
+//
+//    }
+
     public static GameLogger v() { return INSTANCE; }
 
     public synchronized void log(Message msg){
         try {
+            if(out == null){
+                System.out.println("out == null!");
+                exit(-1);
+            }
+            if(msg == null){
+                System.out.println("msg == null!");
+                exit(-1);
+            }
             out.writeObject(msg);
         } catch (IOException e) {
             e.printStackTrace();
