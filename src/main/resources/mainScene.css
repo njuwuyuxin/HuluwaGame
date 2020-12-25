@@ -64,7 +64,19 @@ Button{
     -fx-font-weight:bold;
 }
 #Phase{
+    -fx-pref-width: 400px;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+#GameOver{
+    -fx-pref-width: 400px;
+    -fx-font-size: 60px;
+    -fx-font-weight: bold;
+}
+
+#name{
     -fx-pref-width:400px;
-    -fx-font-size:28px;
+    -fx-font-size:22px;
     -fx-font-weight:bold;
 }

@@ -20,6 +20,7 @@
                         <Image url="@image/bg.png" />
                     </image>
                 </ImageView>
+                <Label id="GameOver" text="Game Over!" textFill="RED" visible="false"/>
                 <GridPane fx:id="board" onMouseClicked="#gridClicked" prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.261" xmlns:fx="http://javafx.com/fxml/1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -72,7 +73,15 @@
             <Label id="Camp" alignment="CENTER" text="阵营" textFill="RED" />
             <Label id="Turn" alignment="CENTER" text="你的回合" textFill="#6800c4" />
             <Label id="Phase" alignment="CENTER" text="移动阶段" textFill="#032490" />
-             <Button id="Over" alignment="BOTTOM_CENTER" text="结束回合" onAction="#HandleTurnOverButton"/>
+             <Button id="Over" alignment="CENTER_RIGHT" text="跳过当前阶段" onAction="#HandleTurnOverButton"/>
+
+             <Label id = "name" alignment="CENTER"/>
+             <Label id = "hp" alignment="CENTER"/>
+             <Label id = "atk" alignment="CENTER"/>
+             <Label id = "def" alignment="CENTER"/>
+             <Label id = "atkRange" alignment="CENTER"/>
+             <Label id = "moveRange" alignment="CENTER"/>
+
          </children>
       </VBox>
    </right>

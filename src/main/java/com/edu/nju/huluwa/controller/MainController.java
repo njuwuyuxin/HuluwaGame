@@ -63,6 +63,7 @@ public class MainController {
         if(!checkObjectCamp(btnSource)){
             hideMoveRange();
         }
+        showRoleInfo(btnSource);
         //在自己回合点击己方阵营按钮,选中单位
         if(GameManager.getInstance().turn == GameManager.Turn.SELF && checkObjectCamp(btnSource)){
             //点击新按钮
@@ -119,6 +120,7 @@ public class MainController {
     public void gridClicked(MouseEvent event) {
         currentButton = null;
         hideMoveRange();
+        hideRoleInfo();
     }
 
     public void HandleTurnOverButton(ActionEvent actionEvent) {
@@ -171,18 +173,7 @@ public class MainController {
         hideMoveRange();
 
         System.out.println("show move range!");
-        //temp test data
-//        ArrayList<Integer> col = new ArrayList<Integer>();
-//        col.add(3);
-//        col.add(3);
-//        col.add(4);
-//        col.add(4);
-//        ArrayList<Integer> row = new ArrayList<Integer>();
-//        row.add(3);
-//        row.add(4);
-//        row.add(3);
-//        row.add(4);
-        //**********//
+
         GridPane board = ((GridPane)selfScene.lookup("#board"));
         Fighter fighter = getFighter(object);
         //for(int i=0;i<col.size();i++){
@@ -205,6 +196,25 @@ public class MainController {
             board.getChildren().remove(b);
         }
         rangeButtons.clear();
+    }
+
+    private void showRoleInfo(Button object){
+        Fighter fighter = getFighter(object);
+        ((Label) selfScene.lookup("#name")).setText("当前角色：" + fighter.getName());
+        ((Label) selfScene.lookup("#hp")).setText("HP：" + fighter.getHp());
+        ((Label) selfScene.lookup("#atk")).setText("攻击力：" + fighter.getAtk());
+        ((Label) selfScene.lookup("#def")).setText("防御力：" + fighter.getDef());
+        ((Label) selfScene.lookup("#atkRange")).setText("攻击范围：" + fighter.getAttackRange());
+        ((Label) selfScene.lookup("#moveRange")).setText("移动范围：" + fighter.getMoveRange());
+    }
+
+    private void hideRoleInfo(){
+        ((Label) selfScene.lookup("#name")).setText("");
+        ((Label) selfScene.lookup("#hp")).setText("");
+        ((Label) selfScene.lookup("#atk")).setText("");
+        ((Label) selfScene.lookup("#def")).setText("");
+        ((Label) selfScene.lookup("#atkRange")).setText("");
+        ((Label) selfScene.lookup("#moveRange")).setText("");
     }
 
     //move main logic
