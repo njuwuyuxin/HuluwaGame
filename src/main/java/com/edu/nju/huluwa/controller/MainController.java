@@ -201,7 +201,7 @@ public class MainController {
     private void showRoleInfo(Button object){
         Fighter fighter = getFighter(object);
         ((Label) selfScene.lookup("#name")).setText("当前角色：" + fighter.getName());
-        ((Label) selfScene.lookup("#hp")).setText("HP：" + fighter.getHp());
+        ((Label) selfScene.lookup("#hp")).setText("HP：" + fighter.getHp() + "/" + fighter.getMaxHp());
         ((Label) selfScene.lookup("#atk")).setText("攻击力：" + fighter.getAtk());
         ((Label) selfScene.lookup("#def")).setText("防御力：" + fighter.getDef());
         ((Label) selfScene.lookup("#atkRange")).setText("攻击范围：" + fighter.getAttackRange());
