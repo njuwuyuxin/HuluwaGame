@@ -8,6 +8,8 @@ import com.edu.nju.huluwa.network.EndMsg;
 import com.edu.nju.huluwa.network.Message;
 import com.edu.nju.huluwa.network.MoveMsg;
 import com.edu.nju.huluwa.roles.Fighter;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 public class MainController {
     private Button currentButton;
@@ -55,9 +59,25 @@ public class MainController {
             changeTurnTo(GameManager.Turn.SELF);
         }
     }
+    @FXML
+    public void initializeInReplayMode(Scene scene) throws InterruptedException {
+        selfScene = scene;
+        rangeButtons = new ArrayList<Button>();
+        System.out.println(GameManager.getInstance().getNetMode());
+        changePhaseTo(GameManager.Phase.MOVE);
+        ((Label)selfScene.lookup("#Camp")).setText("回放模式");
+        changeTurnTo(GameManager.Turn.SELF);
+        for(int i=0;i<GameManager.getInstance().replayMsgList.size();i++){
+            System.out.println(GameManager.getInstance().replayMsgList.get(i).toString());
+        }
+        replayStart();
+    }
 
     @FXML
     public void handleObjectButton(ActionEvent event){
+        if(GameManager.getInstance().isReplay)
+            return;
+
         Button btnSource = (Button) event.getSource();
         System.out.println(btnSource.getId());
         if(!checkObjectCamp(btnSource)){
@@ -123,7 +143,7 @@ public class MainController {
         hideRoleInfo();
     }
 
-    public void HandleTurnOverButton(ActionEvent actionEvent) {
+    public void HandleTurnOverButton(ActionEvent actionEvent) throws InterruptedException {
         if(!GameManager.getInstance().isMyTurn()) return;
         if(GameManager.getInstance().inMovePhase()){
             changePhaseTo(GameManager.Phase.ATTACK);
@@ -360,4 +380,47 @@ public class MainController {
         return f;
     }
 
+    class ReplayTask extends Task<Void>{
+        int messageIndex;
+        ReplayTask(int index){
+            messageIndex = index;
+        }
+        @Override
+        protected synchronized Void call() throws Exception {
+            sleep(1000);
+            return null;
+        }
+
+        @Override
+        protected synchronized void succeeded(){
+            Message message = GameManager.getInstance().replayMsgList.get(messageIndex);
+            if(message.getKind() == Message.Kind.MOVE){
+                MoveMsg moveMsg = (MoveMsg)message;
+                Button object = (Button)selfScene.lookup("#"+moveMsg.getObjectId());
+                moveObject(object,moveMsg.getToX(),moveMsg.getToY());
+            }
+            else if(message.getKind() == Message.Kind.ATTACK){
+                AttackMsg attackMsg = (AttackMsg)message;
+                Button source = (Button)selfScene.lookup("#"+attackMsg.getFromId());
+                Button target = (Button)selfScene.lookup("#"+attackMsg.getToId());
+                attack(source,target);
+            }
+            else if(message.getKind() == Message.Kind.END){
+
+            }
+            System.out.println("step forward "+ "current index="+messageIndex);
+            if(messageIndex<GameManager.getInstance().replayMsgList.size()-1) {
+                System.out.println("create next task");
+                Task<Void> t = new ReplayTask(messageIndex+1);
+                Thread thread = new Thread(t);
+                thread.start();
+            }
+        }
+    }
+
+    private void replayStart() throws InterruptedException {
+        Task<Void> t = new ReplayTask(0);
+        Thread thread = new Thread(t);
+        thread.start();
+    }
 }

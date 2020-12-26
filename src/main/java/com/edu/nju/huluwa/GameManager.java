@@ -8,6 +8,8 @@ import com.edu.nju.huluwa.roles.Monster;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 
 public class GameManager {
     public enum NetMode {SERVER,CLIENT};
@@ -21,14 +23,20 @@ public class GameManager {
     private NetMode netMode;
     public Turn turn;
     public Phase phase;
+    public boolean isReplay;
+    public int replayIndex;
 
     private FighterList<? extends Fighter> humans;
     private FighterList<? extends Fighter> monsters;
+    public ArrayList<Message> replayMsgList;
 
     private GameManager(){
         nc = new NetClient();
         humans = FighterList.genHumanFighters();
         monsters = FighterList.genMonsterFighters();
+        replayMsgList = new ArrayList<Message>();
+        isReplay = false;
+        replayIndex = 0;
     }
 
     public static GameManager getInstance(){

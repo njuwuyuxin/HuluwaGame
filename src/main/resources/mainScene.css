@@ -5,8 +5,8 @@
 
 }
 Button{
-    -fx-min-width: 100px;
-    -fx-min-height:100px;
+    -fx-pref-width: 100px;
+    -fx-pref-height:100px;
     -fx-background-size:100px 100px;
 }
 #boy1{
@@ -72,6 +72,8 @@ Button{
 #SkipPhase{
     -fx-font-size: 22px;
     -fx-font-weight: bold;
+    -fx-pref-width: 180px;
+    -fx-min-height: 10px;
 }
 
 #GameOver{

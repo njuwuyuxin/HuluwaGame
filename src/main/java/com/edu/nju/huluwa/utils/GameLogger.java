@@ -1,5 +1,6 @@
 package com.edu.nju.huluwa.utils;
 
+import com.edu.nju.huluwa.GameManager;
 import com.edu.nju.huluwa.network.Message;
 
 import java.io.*;
@@ -64,7 +65,7 @@ public class GameLogger {
         ){
             Message msg;
             while((msg = (Message) in.readObject()) != null){
-
+                GameManager.getInstance().replayMsgList.add(msg);
             }
         } catch (IOException e) {
             e.printStackTrace();
