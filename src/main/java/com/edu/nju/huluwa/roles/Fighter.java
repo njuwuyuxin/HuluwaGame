@@ -111,9 +111,14 @@ public abstract class Fighter {
         return dist <= this.attackRange;
     }
 
-    public boolean inAttackRange(int x, int y){
+    private boolean inAttackRange(int x, int y){
         int dist = Math.abs(this.x - x) + Math.abs(this.y - y);
         return dist <= this.attackRange;
+    }
+
+    private boolean isSameCamp(Fighter fighter){
+        if(this instanceof Human) return fighter instanceof Human;
+        else return fighter instanceof Monster;
     }
 
     public void getDemage(int demage){
@@ -142,9 +147,14 @@ public abstract class Fighter {
 
     public ArrayList<Pos> attackReachableGrid(){
         ArrayList<Pos> reachable = new ArrayList<>();
+        Fighter fighter;
         for(int x = 0; x < BattleGround.length; ++x){
             for(int y = 0; y < BattleGround.width; ++y){
                 if(inAttackRange(x, y)){
+                    if((fighter = BattleGround.getFighterOn(x, y)) != null){
+                        if(isSameCamp(fighter))
+                            continue;
+                    }
                     reachable.add(new Pos(x, y));
                 }
             }
