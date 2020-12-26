@@ -33,6 +33,7 @@ public class MainController {
     private int availableSteps = 1;
     private int oppoSteps = 1;
     private ArrayList<Button> rangeButtons;
+    private ArrayList<Button> attackRangeButtons;
 
     private void resetAvailableSteps(){
         availableSteps = 1;
@@ -46,6 +47,7 @@ public class MainController {
     public void initialize(Scene scene){
         selfScene = scene;
         rangeButtons = new ArrayList<Button>();
+        attackRangeButtons = new ArrayList<Button>();
         System.out.println(GameManager.getInstance().getNetMode());
         changePhaseTo(GameManager.Phase.MOVE);
 
@@ -89,46 +91,30 @@ public class MainController {
             //点击新按钮
             if(currentButton == null) {
                 currentButton = btnSource;
-                if (GameManager.getInstance().phase == GameManager.Phase.MOVE){
-                    System.out.println(GameManager.getInstance().turn);
+                if (GameManager.getInstance().inMovePhase()){
                     showMoveRange(btnSource);
+                }
+                else if(GameManager.getInstance().inAttackPhase()){
+                    showAttackRange(btnSource);
                 }
             }
             //点击了其他己方按钮
             else if(currentButton != btnSource){
                 currentButton = btnSource;
-                if (GameManager.getInstance().phase == GameManager.Phase.MOVE){
-                    // System.out.println(GameManager.getInstance().turn);
+                if (GameManager.getInstance().inMovePhase()){
                     showMoveRange(btnSource);
+                }
+                else if(GameManager.getInstance().inAttackPhase()){
+                    showAttackRange(btnSource);
                 }
             }
             //二次点击同一按钮视为取消选择
             else{
                 hideMoveRange();
+                hideAttackRange();
                 currentButton = null;
             }
 
-        }
-        //点击对方阵营按钮,进行攻击
-        else if(GameManager.getInstance().turn == GameManager.Turn.SELF &&
-                GameManager.getInstance().phase == GameManager.Phase.ATTACK && currentButton!=null &&
-                getFighter(currentButton).canAttack(getFighter(btnSource))){
-            System.out.println(currentButton.getId()+" attack "+btnSource.getId());
-
-            //TODO: Attack Logic and UI Update
-            attack(currentButton,btnSource);
-
-            //send attack message
-            int currentX = GridPane.getColumnIndex(currentButton);
-            int currentY = GridPane.getRowIndex(currentButton);
-            int targetX = GridPane.getColumnIndex(btnSource);
-            int targetY = GridPane.getRowIndex(btnSource);
-            Message attackMsg = new AttackMsg(currentX,currentY,targetX,targetY,currentButton.getId(),btnSource.getId());
-            GameManager.getInstance().getNetClient().sendMsg(attackMsg);
-            checkGameOver();
-
-            changePhaseTo(GameManager.Phase.MOVE);
-            waitForResponse();
         }
         else{
             currentButton = null;
@@ -202,7 +188,6 @@ public class MainController {
         Fighter fighter = getFighter(object);
         //for(int i=0;i<col.size();i++){
         for(Pos pos : fighter.reachableGrid()){
-            System.out.println("create range button");
             Button range = new Button();
             RangeButtonHandler handler = new RangeButtonHandler();
             range.setOnAction(handler);
@@ -214,12 +199,37 @@ public class MainController {
         }
     }
 
+    private void showAttackRange(Button object){
+        hideAttackRange();
+
+        Fighter fighter = getFighter(object);
+        GridPane board = ((GridPane)selfScene.lookup("#board"));
+        for(Pos pos : fighter.attackReachableGrid()){
+            Button range = new Button();
+            AttackRangeButtonHandler handler = new AttackRangeButtonHandler();
+            range.setOnAction(handler);
+            board.getChildren().add(range);
+            GridPane.setColumnIndex(range, pos.getX());
+            GridPane.setRowIndex(range,pos.getY());
+            range.setStyle("-fx-background-color:red; -fx-opacity:0.5");
+            attackRangeButtons.add(range);
+        }
+    }
+
     private void hideMoveRange(){
         GridPane board = ((GridPane)selfScene.lookup("#board"));
         for(Button b:rangeButtons){
             board.getChildren().remove(b);
         }
         rangeButtons.clear();
+    }
+
+    private void hideAttackRange(){
+        GridPane board = ((GridPane)selfScene.lookup("#board"));
+        for(Button b:attackRangeButtons){
+            board.getChildren().remove(b);
+        }
+        attackRangeButtons.clear();
     }
 
     private void showRoleInfo(Button object){
@@ -352,7 +362,7 @@ public class MainController {
         @Override
         public void handle(ActionEvent event){
             Button btnSource = (Button)event.getSource();
-            if(GameManager.getInstance().turn==GameManager.Turn.SELF&&GameManager.getInstance().phase==GameManager.Phase.MOVE) {
+            if(GameManager.getInstance().isMyTurn()&&GameManager.getInstance().inMovePhase()) {
                 if (currentButton != null) {
                     availableSteps--;
                     int currentX = GridPane.getColumnIndex(currentButton);
@@ -365,6 +375,38 @@ public class MainController {
                     changePhaseTo(GameManager.Phase.ATTACK);
                     hideMoveRange();
                     currentButton = null;
+                }
+            }
+            else{
+                currentButton = null;
+            }
+        }
+    }
+
+    //handle move operation
+    private class AttackRangeButtonHandler implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event){
+            Button btnSource = (Button)event.getSource();
+            if(GameManager.getInstance().isMyTurn()&&GameManager.getInstance().inAttackPhase()) {
+                if (currentButton != null) {
+                    availableSteps--;
+                    int currentX = GridPane.getColumnIndex(currentButton);
+                    int currentY = GridPane.getRowIndex(currentButton);
+                    int targetX = GridPane.getColumnIndex(btnSource);
+                    int targetY = GridPane.getRowIndex(btnSource);
+                    Fighter fighter = BattleGround.getFighterOn(targetX,targetY);
+                    if(fighter == null)
+                        return;
+                    Button targetButton = (Button)selfScene.lookup("#"+fighter.getId());
+                    attack(currentButton,targetButton);
+                    Message attackMsg = new AttackMsg(currentX,currentY,targetX,targetY,currentButton.getId(),targetButton.getId());
+                    GameManager.getInstance().getNetClient().sendMsg(attackMsg);
+                    currentButton = null;
+                    changePhaseTo(GameManager.Phase.MOVE);
+                    hideAttackRange();
+                    checkGameOver();
+                    waitForResponse();
                 }
             }
             else{
