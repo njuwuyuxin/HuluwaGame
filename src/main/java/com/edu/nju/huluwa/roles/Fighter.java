@@ -111,6 +111,11 @@ public abstract class Fighter {
         return dist <= this.attackRange;
     }
 
+    public boolean inAttackRange(int x, int y){
+        int dist = Math.abs(this.x - x) + Math.abs(this.y - y);
+        return dist <= this.attackRange;
+    }
+
     public void getDemage(int demage){
         this.hp -= demage;
         return;
@@ -134,4 +139,17 @@ public abstract class Fighter {
         }
         return reachable;
     }
+
+    public ArrayList<Pos> attackReachableGrid(){
+        ArrayList<Pos> reachable = new ArrayList<>();
+        for(int x = 0; x < BattleGround.length; ++x){
+            for(int y = 0; y < BattleGround.width; ++y){
+                if(inAttackRange(x, y)){
+                    reachable.add(new Pos(x, y));
+                }
+            }
+        }
+        return reachable;
+    }
+
 }
