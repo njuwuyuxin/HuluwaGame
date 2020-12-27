@@ -13,6 +13,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -130,6 +131,8 @@ public class MainController {
     }
 
     public void HandleTurnOverButton(ActionEvent actionEvent) throws InterruptedException {
+        hideMoveRange();
+        hideAttackRange();
         if(!GameManager.getInstance().isMyTurn()) return;
         if(GameManager.getInstance().inMovePhase()){
             changePhaseTo(GameManager.Phase.ATTACK);
@@ -267,7 +270,7 @@ public class MainController {
         GridPane.setRowIndex(object,toY);
     }
     //attack main logic
-    private void attack(Button source, Button target){
+    private void attack(Button source, Button target) throws InterruptedException {
         Fighter attacker = getFighter(source);
         Fighter defender = getFighter(target);
         attacker.attack(defender);
@@ -275,6 +278,37 @@ public class MainController {
             System.out.println(target.getId() + " go die!");
             objectDie(target);
         }
+
+        //Attack Effect
+        sleep(200);
+        GridPane board = ((GridPane)selfScene.lookup("#board"));
+        Button attackEffect = new Button();
+        board.getChildren().add(attackEffect);
+        GridPane.setColumnIndex(attackEffect, GridPane.getColumnIndex(target));
+        GridPane.setRowIndex(attackEffect,GridPane.getRowIndex(target));
+        attackEffect.setStyle("-fx-background-color:red; -fx-opacity:0.5");
+        if(GridPane.getColumnIndex(source)>GridPane.getColumnIndex(target)) {
+            GridPane.setMargin(target, new Insets(0, 0, 0, -10));
+            GridPane.setMargin(attackEffect, new Insets(0, 0, 0, -10));
+        }
+        else{
+            GridPane.setMargin(target, new Insets(0, 0, 0, 10));
+            GridPane.setMargin(attackEffect, new Insets(0, -10, 0, 0));
+        }
+        Task<Void> attackEffectTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                sleep(200);
+                return null;
+            }
+            @Override
+            protected void succeeded(){
+                board.getChildren().remove(attackEffect);
+                GridPane.setMargin(target,new Insets(0,0,0,0));
+            }
+        };
+        Thread t = new Thread(attackEffectTask);
+        t.start();
     }
 
     private void objectDie(Button object){
@@ -339,7 +373,11 @@ public class MainController {
                 Button source = (Button)selfScene.lookup("#"+attackMsg.getFromId());
                 Button target = (Button)selfScene.lookup("#"+attackMsg.getToId());
                 //TODO: main logic after receiving attack message
-                attack(source,target);
+                try {
+                    attack(source,target);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 checkGameOver();
 
                 changePhaseTo(GameManager.Phase.MOVE);
@@ -399,7 +437,11 @@ public class MainController {
                     if(fighter == null)
                         return;
                     Button targetButton = (Button)selfScene.lookup("#"+fighter.getId());
-                    attack(currentButton,targetButton);
+                    try {
+                        attack(currentButton,targetButton);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Message attackMsg = new AttackMsg(currentX,currentY,targetX,targetY,currentButton.getId(),targetButton.getId());
                     GameManager.getInstance().getNetClient().sendMsg(attackMsg);
                     currentButton = null;
@@ -445,7 +487,11 @@ public class MainController {
                 AttackMsg attackMsg = (AttackMsg)message;
                 Button source = (Button)selfScene.lookup("#"+attackMsg.getFromId());
                 Button target = (Button)selfScene.lookup("#"+attackMsg.getToId());
-                attack(source,target);
+                try {
+                    attack(source,target);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             else if(message.getKind() == Message.Kind.END){
 
