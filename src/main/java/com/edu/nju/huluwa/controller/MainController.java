@@ -287,6 +287,11 @@ public class MainController {
         GridPane.setColumnIndex(attackEffect, GridPane.getColumnIndex(target));
         GridPane.setRowIndex(attackEffect,GridPane.getRowIndex(target));
         attackEffect.setStyle("-fx-background-color:red; -fx-opacity:0.5");
+        Button attackerEffect = new Button();
+        board.getChildren().add(attackerEffect);
+        GridPane.setColumnIndex(attackerEffect, GridPane.getColumnIndex(source));
+        GridPane.setRowIndex(attackerEffect,GridPane.getRowIndex(source));
+        attackerEffect.setStyle("-fx-background-color:green; -fx-opacity:0.5");
         if(GridPane.getColumnIndex(source)>GridPane.getColumnIndex(target)) {
             GridPane.setMargin(target, new Insets(0, 0, 0, -10));
             GridPane.setMargin(attackEffect, new Insets(0, 0, 0, -10));
@@ -304,6 +309,7 @@ public class MainController {
             @Override
             protected void succeeded(){
                 board.getChildren().remove(attackEffect);
+                board.getChildren().remove(attackerEffect);
                 GridPane.setMargin(target,new Insets(0,0,0,0));
             }
         };
