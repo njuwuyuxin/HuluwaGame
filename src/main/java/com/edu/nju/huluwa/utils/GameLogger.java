@@ -12,14 +12,14 @@ import static java.lang.System.exit;
 public class GameLogger {
     File log_file;
     ObjectOutputStream out;
-    static GameLogger INSTANCE = new GameLogger();
+    static GameLogger INSTANCE = null;
     private GameLogger(){
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat();
         formatter.applyPattern("yyyy-MM-dd HH-mm-ss");
         File log_dir = new File("saves");
         if(!log_dir.exists()) log_dir.mkdir();
-        log_file = new File("saves/" + formatter.format(date) + ".txt");
+        log_file = new File("saves/" + formatter.format(date) + ".save");
         try {
             System.out.println(log_file.getAbsolutePath());
 
@@ -33,17 +33,12 @@ public class GameLogger {
         }
     }
 
-//    private GameLogger(){
-//        Date date = new Date();
-//        SimpleDateFormat formatter = new SimpleDateFormat();
-//        formatter.applyPattern("yyyy-MM-dd HH-mm-ss");
-//        Path p = Paths.get("saves/" + formatter.format(date) + ".txt");
-//
-//    }
+    public static GameLogger v() {
+        if(INSTANCE == null) INSTANCE = new GameLogger();
+        return INSTANCE;
+    }
 
-    public static GameLogger v() { return INSTANCE; }
-
-    public synchronized void log(Message msg){
+    public void log(Message msg){
         try {
             if(out == null){
                 System.out.println("out == null!");
@@ -67,7 +62,10 @@ public class GameLogger {
             while((msg = (Message) in.readObject()) != null){
                 GameManager.getInstance().replayMsgList.add(msg);
             }
-        } catch (IOException e) {
+        } catch (EOFException e) {
+            // end of file
+        }
+        catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

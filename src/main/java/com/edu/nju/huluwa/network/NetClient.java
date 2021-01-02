@@ -63,7 +63,7 @@ public class NetClient {
     public void sendMsg(Message msg){
         sendQueueLock.lock();
         try{
-            //GameLogger.v().log(msg);
+            GameLogger.v().log(msg);
             sendQueue.offer(msg);
             System.out.println("add msg to sendQueue");
         } finally {
@@ -77,7 +77,7 @@ public class NetClient {
         try {
             if(!recvQueue.isEmpty()){
                 msg = recvQueue.poll();
-                //GameLogger.v().log(msg);
+                GameLogger.v().log(msg);
             }
         } finally {
             recvQueueLock.unlock();
@@ -150,7 +150,7 @@ public class NetClient {
                         if(!sendQueue.isEmpty()){
                             Message msg = sendQueue.poll();
                             out.writeObject(msg);
-                            GameLogger.v().log(msg);
+                            //GameLogger.v().log(msg);
                             System.out.println("already send the msg");
                             // TODO - add log
                             out.flush();
@@ -178,7 +178,7 @@ public class NetClient {
                 while(running){
                     Message msg = (Message) in.readObject();
                     System.out.println("receive msg, msg type : " + msg.getKind());
-                    GameLogger.v().log(msg);
+                    //GameLogger.v().log(msg);
                     GameManager.getInstance().handleReceiveMessage(msg);
                     recvQueueLock.lock();
                     try {

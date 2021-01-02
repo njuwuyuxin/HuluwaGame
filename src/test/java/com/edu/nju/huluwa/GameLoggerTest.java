@@ -12,7 +12,7 @@ import java.nio.*;
 public class GameLoggerTest {
     @Test
     public void testLogger(){
-        File saveFile = new File("saves/test.txt");
+        File saveFile = new File("saves/test.save");
         try (
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveFile));
         ){

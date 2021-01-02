@@ -51,7 +51,7 @@ public class MainMenuController {
         fileChooser.setTitle("打开游戏记录文件");
         fileChooser.setInitialDirectory(new File("saves/"));
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("TXT files", "*.txt")
+                new FileChooser.ExtensionFilter("save files", "*.save")
         );
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         File file = fileChooser.showOpenDialog(currentStage);

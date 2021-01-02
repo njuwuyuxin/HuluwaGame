@@ -69,6 +69,9 @@ public class MainController {
         System.out.println(GameManager.getInstance().getNetMode());
         changePhaseTo(GameManager.Phase.MOVE);
         ((Label)selfScene.lookup("#Camp")).setText("回放模式");
+        selfScene.lookup("#Turn").setVisible(false);
+        selfScene.lookup("#SkipPhase").setVisible(false);
+        selfScene.lookup("#Phase").setVisible(false);
         changeTurnTo(GameManager.Turn.SELF);
         for(int i=0;i<GameManager.getInstance().replayMsgList.size();i++){
             System.out.println(GameManager.getInstance().replayMsgList.get(i).toString());
@@ -508,6 +511,9 @@ public class MainController {
                 Task<Void> t = new ReplayTask(messageIndex+1);
                 Thread thread = new Thread(t);
                 thread.start();
+            }
+            else{
+                checkGameOver();
             }
         }
     }
