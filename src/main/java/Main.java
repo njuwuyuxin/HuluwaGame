@@ -1,4 +1,4 @@
-package com.edu.nju.huluwa;
+import com.edu.nju.huluwa.GameManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
