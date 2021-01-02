@@ -49,7 +49,7 @@ public class MainMenuController {
     public void handleReplayButton(ActionEvent event) throws IOException, InterruptedException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("打开游戏记录文件");
-        fileChooser.setInitialDirectory(new File("saves/"));
+        fileChooser.setInitialDirectory(new File("/"));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("save files", "*.save")
         );

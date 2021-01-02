@@ -13,7 +13,7 @@ public class Main extends Application{
     }
 
     public void start(Stage primaryStage) throws Exception {
-        Parent mainMenuRoot = FXMLLoader.load(getClass().getClassLoader().getResource("mainMenu.fxml"));
+        Parent mainMenuRoot = FXMLLoader.load(getClass().getClassLoader().getResource("MainMenu.fxml"));
         Scene mainMenuScene = new Scene(mainMenuRoot, 300, 500);
         mainMenuScene.getStylesheets().add(getClass().getClassLoader().getResource("mainMenu.css").toExternalForm());
 
