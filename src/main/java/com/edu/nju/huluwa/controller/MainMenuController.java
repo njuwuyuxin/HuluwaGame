@@ -49,12 +49,13 @@ public class MainMenuController {
     public void handleReplayButton(ActionEvent event) throws IOException, InterruptedException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("打开游戏记录文件");
-        fileChooser.setInitialDirectory(new File("/"));
+        fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("save files", "*.save")
         );
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         File file = fileChooser.showOpenDialog(currentStage);
+        if(file == null) return;
         GameLogger.readLog(file);
         GameManager.getInstance().isReplay = true;
 

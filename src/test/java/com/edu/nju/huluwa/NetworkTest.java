@@ -9,7 +9,7 @@ import java.io.*;
 public class NetworkTest {
 
     @Test
-    public void testNet(){
+    public void testObjectStream(){
         Message msg = new MoveMsg("boy1", 1, 2, 6, 5);
         Message msg_ = new MoveMsg("boy2", 3, 3, 4, 4);
         System.out.println(msg);
@@ -32,6 +32,11 @@ public class NetworkTest {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            File file = new File("temp.test");
+            if(file != null) {
+                file.delete();
+            }
         }
     }
 }

@@ -12,12 +12,13 @@ import java.nio.*;
 public class GameLoggerTest {
     @Test
     public void testLogger(){
-        File saveFile = new File("saves/test.save");
+        File saveFile = new File("saves/战斗记录.save");
         try (
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveFile));
         ){
             Message m;
-            while((m = (Message) in.readObject()) != null){
+            for(int i = 0; i < 5; ++i){
+                m = (Message) in.readObject();
                 if(m.getKind()==Message.Kind.MOVE){
                     MoveMsg moveMsg = (MoveMsg)m;
                     System.out.print("Receive Move Message:");
